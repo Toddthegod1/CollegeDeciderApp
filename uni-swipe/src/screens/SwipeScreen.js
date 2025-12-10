@@ -1,0 +1,193 @@
+
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator, StyleSheet, Image, Button } from 'react-native';
+import Swiper from 'react-native-deck-swiper';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
+import { db, auth } from '../firebase';
+
+export default function SwipeScreen() {
+  const [universities, setUniversities] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUniversities = async () => {
+      try {
+        const snap = await getDocs(collection(db, 'universities'));
+        const data = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUniversities(data);
+      } catch (err) {
+        console.log('Error fetching universities:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUniversities();
+  }, []);
+
+  const handleSwipe = async (cardIndex, direction) => {
+    const uni = universities[cardIndex];
+    if (!uni || !auth.currentUser) return;
+
+    try {
+      await addDoc(collection(db, 'swipes'), {
+        userId: auth.currentUser.uid,
+        universityId: uni.id,
+        direction, // "left" or "right"
+        createdAt: new Date(),
+      });
+    } catch (err) {
+      console.log('Error saving swipe:', err);
+    }
+  };
+
+  const onLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.log('Logout error:', err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator />
+        <Text>Loading universities...</Text>
+      </View>
+    );
+  }
+
+  if (!universities.length) {
+    return (
+      <View style={styles.center}>
+        <Text>No universities to show yet.</Text>
+        <Button title="Log out" onPress={onLogout} />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>UniSwipe</Text>
+        <Button title="Log out" onPress={onLogout} />
+      </View>
+
+      <Swiper
+        cards={universities}
+        renderCard={(card) => {
+          if (!card) return null;
+
+          return (
+            <View style={styles.card}>
+              {card.photoUrl ? (
+                <Image source={{ uri: card.photoUrl }} style={styles.image} />
+              ) : (
+                <View style={[styles.image, styles.placeholder]}>
+                  <Text>No image</Text>
+                </View>
+              )}
+              <Text style={styles.cardTitle}>{card.name}</Text>
+              <Text style={styles.cardSubtitle}>
+                {card.city}, {card.country}
+              </Text>
+
+              {Array.isArray(card.tags) && (
+                <View style={styles.tagRow}>
+                  {card.tags.map((tag) => (
+                    <View key={tag} style={styles.tag}>
+                      <Text style={styles.tagText}>{tag}</Text>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </View>
+          );
+        }}
+        onSwipedLeft={(i) => handleSwipe(i, 'left')}
+        onSwipedRight={(i) => handleSwipe(i, 'right')}
+        backgroundColor="#f5f5f5"
+        stackSize={3}
+        cardIndex={0}
+        animateCardOpacity
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 48,
+    paddingHorizontal: 16,
+    backgroundColor: '#f5f5f5',
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  header: {
+    marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '700',
+  },
+  card: {
+    flex: 0.75,
+    borderRadius: 16,
+    padding: 16,
+    backgroundColor: 'white',
+    justifyContent: 'flex-start',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  image: {
+    width: '100%',
+    height: 220,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
+  placeholder: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ddd',
+  },
+  cardTitle: {
+    fontSize: 22,
+    fontWeight: '600',
+  },
+  cardSubtitle: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 8,
+  },
+  tagRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8,
+  },
+  tag: {
+    backgroundColor: '#eee',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  tagText: {
+    fontSize: 12,
+    color: '#333',
+  },
+});
