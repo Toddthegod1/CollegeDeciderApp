@@ -84,6 +84,12 @@ export default function SwipeScreen() {
   const onLogout = async () => {
     try {
       await signOut(auth);
+      // navigate back to login after sign out
+      try {
+        router.replace('/login');
+      } catch (e) {
+        // ignore navigation errors
+      }
     } catch (err) {
       console.log('Logout error:', err);
     }
