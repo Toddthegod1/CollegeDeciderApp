@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Image, Button } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Image, Pressable } from 'react-native';
 import Swiper from 'react-native-deck-swiper';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
@@ -73,9 +73,19 @@ export default function SwipeScreen() {
 
   return (
     <View style={styles.container}>
+      <Pressable onPress={onLogout} style={styles.floatingLogout}>
+        <Text style={styles.floatingLogoutText}>Sign out</Text>
+      </Pressable>
       <View style={styles.header}>
+        <Pressable onPress={onLogout} style={styles.logoutLinkLeft}>
+          <Text style={styles.logoutLinkText}>Sign out</Text>
+        </Pressable>
         <Text style={styles.title}>UniSwipe</Text>
-        <Button title="Log out" onPress={onLogout} />
+        <View style={styles.headerRight}>
+          {auth.currentUser?.email ? (
+            <Text style={styles.userEmail}>{auth.currentUser.email}</Text>
+          ) : null}
+        </View>
       </View>
 
       <Swiper
@@ -140,6 +150,40 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 26,
+    fontWeight: '700',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userEmail: {
+    marginRight: 12,
+    color: '#555',
+  },
+  logoutLinkLeft: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    marginRight: 12,
+    borderRadius: 6,
+    backgroundColor: 'transparent',
+  },
+  logoutLinkText: {
+    color: '#ff4d4f',
+    fontWeight: '600',
+  },
+  floatingLogout: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    zIndex: 1000,
+    backgroundColor: '#ff4d4f',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    elevation: 6,
+  },
+  floatingLogoutText: {
+    color: '#fff',
     fontWeight: '700',
   },
   card: {
