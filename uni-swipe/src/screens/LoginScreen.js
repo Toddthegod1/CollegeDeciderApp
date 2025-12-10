@@ -3,15 +3,28 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { useRouter } from 'expo-router';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const onLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // App.js will switch stacks when user auth state changes
+      // Debug: confirm sign-in succeeded and show current user
+      console.log('signInWithEmailAndPassword resolved');
+      console.log('auth.currentUser:', auth.currentUser);
+      // show a quick alert on web so the user knows auth succeeded
+      try {
+        // some platforms won't show alert nicely; guard it
+        Alert.alert('Signed in', `UID: ${auth.currentUser?.uid || 'unknown'}`);
+      } catch (e) {
+        /* ignore */
+      }
+      // Navigate immediately to the app area on web so user sees content right away
+      router.replace('/swipe');
     } catch (err) {
       console.log(err);
       Alert.alert('Login Error', err.message);
@@ -42,7 +55,7 @@ export default function LoginScreen({ navigation }) {
       <Button title="Log In" onPress={onLogin} />
 
       <View style={{ marginTop: 16 }}>
-        <Text onPress={() => navigation.navigate('Register')} style={styles.link}>
+        <Text onPress={() => router.navigate('/register')} style={styles.link}>
           Don&apos;t have an account? Register
         </Text>
       </View>
