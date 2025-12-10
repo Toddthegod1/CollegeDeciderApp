@@ -13,16 +13,6 @@ export default function LoginScreen() {
   const onLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Debug: confirm sign-in succeeded and show current user
-      console.log('signInWithEmailAndPassword resolved');
-      console.log('auth.currentUser:', auth.currentUser);
-      // show a quick alert on web so the user knows auth succeeded
-      try {
-        // some platforms won't show alert nicely; guard it
-        Alert.alert('Signed in', `UID: ${auth.currentUser?.uid || 'unknown'}`);
-      } catch (e) {
-        /* ignore */
-      }
       // Navigate immediately to the app area on web so user sees content right away
       router.replace('/swipe');
     } catch (err) {

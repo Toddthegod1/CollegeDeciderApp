@@ -13,18 +13,8 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
 
   const onRegister = async () => {
-    console.log('onRegister called', { email });
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('createUserWithEmailAndPassword resolved', cred);
-      try {
-        // also show a browser alert for visibility on web
-        if (typeof window !== 'undefined' && window.alert) {
-          window.alert('Registered: ' + (cred.user?.uid || 'uid unknown'));
-        }
-      } catch (e) {
-        /* ignore */
-      }
 
       // Create a user document in Firestore
       await setDoc(doc(db, 'users', cred.user.uid), {
@@ -37,12 +27,7 @@ export default function RegisterScreen() {
       // After successful registration, navigate to the app area immediately
       router.replace('/swipe');
     } catch (err) {
-      console.error('onRegister error', err);
-      try {
-        if (typeof window !== 'undefined' && window.alert) {
-          window.alert('Register Error: ' + (err?.message || String(err)));
-        }
-      } catch (e) {}
+      console.log(err);
       Alert.alert('Register Error', err.message);
     }
   };
