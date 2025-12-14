@@ -70,6 +70,7 @@ export default function VisitedListScreen() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.headerTitle}>Selected Universities</Text>
       <FlatList
         data={universities}
         keyExtractor={(item) => item.id}
@@ -87,6 +88,7 @@ export default function VisitedListScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, backgroundColor: '#f5f5f5' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  headerTitle: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 },
   card: { backgroundColor: 'white', padding: 16, borderRadius: 12, marginBottom: 12 },
   title: { fontSize: 18, fontWeight: '700' },
   subtitle: { color: '#666' },

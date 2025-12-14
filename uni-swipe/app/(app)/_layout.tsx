@@ -1,13 +1,17 @@
 import React from 'react';
-import { Stack } from 'expo-router';
+import { Tabs } from 'expo-router';
 
 export default function AppLayout() {
   return (
-    <Stack>
-      <Stack.Screen
+    <Tabs>
+      <Tabs.Screen
         name="swipe"
-        options={{ headerShown: false, title: 'Swipe' }}
+        options={{ title: 'Swipe' }}
       />
-    </Stack>
+      <Tabs.Screen
+        name="visited"
+        options={{ title: 'Selected' }}
+      />
+    </Tabs>
   );
 }

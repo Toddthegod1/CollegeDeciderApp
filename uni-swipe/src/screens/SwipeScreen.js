@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Image, Pressable, ScrollView } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, Image, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import Swiper from 'react-native-deck-swiper';
 import { collection, getDocs, addDoc, updateDoc, doc, arrayUnion, getDoc } from 'firebase/firestore';
@@ -125,9 +125,6 @@ export default function SwipeScreen() {
           <Text style={styles.logoutLinkText}>Sign out</Text>
         </Pressable>
         <Text style={styles.title}>UniSwipe</Text>
-        <Pressable onPress={() => router.push('/visited')} style={styles.viewSelectedLink}>
-          <Text style={styles.viewSelectedText}>View selected</Text>
-        </Pressable>
         <View style={styles.headerRight}>
           {auth.currentUser?.email ? (
             <Text style={styles.userEmail}>{auth.currentUser.email}</Text>
@@ -173,24 +170,6 @@ export default function SwipeScreen() {
         cardIndex={0}
         animateCardOpacity
       />
-
-      {/* Bottom bar showing visited/selected universities */}
-      {selected && selected.length > 0 ? (
-        <View style={styles.bottomBar}>
-          <Text style={styles.bottomTitle}>Selected Universities</Text>
-          <ScrollView horizontal contentContainerStyle={styles.bottomScroll} showsHorizontalScrollIndicator={false}>
-            {selected.map((id) => {
-              const uni = universities.find((u) => u.id === id);
-              const name = uni ? uni.name : id;
-              return (
-                <View key={id} style={styles.bottomChip}>
-                  <Text style={styles.bottomChipText}>{name}</Text>
-                </View>
-              );
-            })}
-          </ScrollView>
-        </View>
-      ) : null}
     </View>
   );
 }
@@ -234,18 +213,6 @@ const styles = StyleSheet.create({
   },
   logoutLinkText: {
     color: '#ff4d4f',
-    fontWeight: '600',
-  },
-  viewSelectedLink: {
-    position: 'absolute',
-    right: 12,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    backgroundColor: '#007bff',
-    borderRadius: 8,
-  },
-  viewSelectedText: {
-    color: '#fff',
     fontWeight: '600',
   },
   floatingLogout: {
@@ -309,37 +276,6 @@ const styles = StyleSheet.create({
   },
   tagText: {
     fontSize: 12,
-    color: '#333',
-  },
-  bottomBar: {
-    position: 'absolute',
-    left: 12,
-    right: 12,
-    bottom: 12,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 6,
-  },
-  bottomTitle: {
-    fontWeight: '700',
-    marginBottom: 8,
-  },
-  bottomScroll: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  bottomChip: {
-    backgroundColor: '#eee',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 16,
-    marginRight: 8,
-  },
-  bottomChipText: {
     color: '#333',
   },
 });
