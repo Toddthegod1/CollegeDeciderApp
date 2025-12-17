@@ -52,3 +52,5 @@ npm run reset-project
 High school students, transfer students, and anyone researching colleges who wants an organized, personalized way to evaluate and compare their options.
 
 This project demonstrates full-stack mobile development skills, modern React Native patterns, and creative problem-solving in education technology.
+
+However, it is mostly just a personal project to learn new technologies related to routing and to be proud of something!
