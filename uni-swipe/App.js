@@ -9,6 +9,7 @@ import { auth } from './src/firebase';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import SwipeScreen from './src/screens/SwipeScreen';
+import CompareScreen from "./src/screens/CompareScreen";
 
 const AuthStack = createNativeStackNavigator();
 const AppStack = createNativeStackNavigator();
@@ -26,6 +27,7 @@ function AppStackScreens() {
   return (
     <AppStack.Navigator>
       <AppStack.Screen name="Swipe" component={SwipeScreen} />
+      <AppStack.Screen name="Compare" component={CompareScreen} options={{ title: "Compare Universities"}}/>
     </AppStack.Navigator>
   );
 }
