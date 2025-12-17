@@ -1,6 +1,3 @@
-# Welcome to your Expo app 👋
-
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
 ## Get started
 
@@ -23,7 +20,7 @@ In the output, you'll find options to open the app in a
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
 ## Get a fresh project
 
@@ -33,18 +30,25 @@ When you're ready, run:
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## About this project
 
-## Learn more
+**College Decider** is a React Native mobile app that revolutionizes university selection with a Tinder-style swiping interface. Inspired by the challenge of comparing universities based on personal criteria, this app allows students to discover and evaluate colleges through an intuitive, engaging experience.
 
-To learn more about developing your project with Expo, look at the following resources:
+### Key Features
+- **Swipe Interface**: Discover universities with a familiar, gamified swiping experience
+- **Personal Ratings**: Rate universities on Vibe, Academics, Location, and Gut Feeling (1-5 stars)
+- **Notes System**: Add personal notes and thoughts for each university
+- **Side-by-Side Comparison**: Compare selected universities with detailed information
+- **User Authentication**: login system with Firebase
+- **Cloud Storage**: All data persisted in Firebase Firestore
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Tech Stack
+- **Frontend**: React Native with Expo
+- **Navigation**: Expo Router (file-based routing)
+- **Backend**: Firebase (Authentication + Firestore)
+- **Styling**: React Native StyleSheet with custom components
 
-## Join the community
+### Target Users
+High school students, transfer students, and anyone researching colleges who wants an organized, personalized way to evaluate and compare their options.
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project demonstrates full-stack mobile development skills, modern React Native patterns, and creative problem-solving in education technology.
